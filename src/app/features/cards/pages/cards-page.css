@@ -54,6 +54,14 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.field-error {
+  color: var(--danger);
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
 label {
   color: var(--muted);
   display: grid;
@@ -96,6 +104,13 @@ label {
   color: var(--muted);
   margin: 0;
   padding: var(--space-4);
+}
+
+.results-summary {
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 .catalog-error {

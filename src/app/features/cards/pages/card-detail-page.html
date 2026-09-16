@@ -1,10 +1,17 @@
-<section class="detail-page">
+<section class="detail-page" [attr.aria-busy]="loading()">
   <a class="back-link" routerLink="/cards">Volver al catálogo</a>
 
   @if (loading()) {
-    <p aria-live="polite">Cargando carta...</p>
+    <p role="status">Cargando carta...</p>
   } @else if (error(); as message) {
-    <p role="alert">{{ message }}</p>
+    <section class="detail-feedback">
+      <h1>
+        {{
+          message === 'Carta no encontrada.' ? 'Carta no encontrada' : 'No se pudo cargar la carta'
+        }}
+      </h1>
+      <p role="alert">{{ message }}</p>
+    </section>
   } @else if (card(); as item) {
     <article class="detail-card">
       <header class="detail-header">
@@ -19,7 +26,7 @@
           @if (selectedImage(); as image) {
             <img [src]="image.imageUrl" [alt]="item.name + ' - imagen principal'" />
             @if (item.images.length > 1) {
-              <div class="image-picker" aria-label="Otras imágenes">
+              <div class="image-picker" role="group" aria-label="Otras imágenes">
                 @for (option of item.images; track option.imageId; let index = $index) {
                   <button
                     type="button"

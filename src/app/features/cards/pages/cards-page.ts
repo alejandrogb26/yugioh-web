@@ -1,10 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+} from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY, catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { CardsApiService } from '../../../core/api/cards-api.service';
+import { pageTitle } from '../../../core/page-title';
 import { CardSummary, PageResponse } from '../../../core/models/card.models';
 import {
   CardsCatalogState,
@@ -47,6 +55,7 @@ export class CardsPage implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly title = inject(Title);
 
   protected readonly pageSizes = PAGE_SIZES;
   protected readonly sortFields = SORT_FIELDS;
@@ -58,6 +67,7 @@ export class CardsPage implements OnInit {
   protected readonly response = signal<PageResponse<CardSummary> | null>(null);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
+  protected readonly levelError = signal<string | null>(null);
   protected readonly sortField = computed<SortField>(
     () => this.catalogState().sort.split(',')[0] as SortField,
   );
@@ -69,10 +79,11 @@ export class CardsPage implements OnInit {
     type: new FormControl('', { nonNullable: true }),
     attribute: new FormControl('', { nonNullable: true }),
     race: new FormControl('', { nonNullable: true }),
-    level: new FormControl<number | null>(null),
+    level: new FormControl<number | null>(null, { validators: [levelValidator] }),
   });
 
   ngOnInit(): void {
+    this.title.setTitle(pageTitle('Cartas'));
     this.route.queryParamMap
       .pipe(
         map((query) => parseCardsCatalogState(query)),
@@ -114,11 +125,20 @@ export class CardsPage implements OnInit {
   }
 
   protected search(): void {
+    const level = this.filters.controls.level;
+    if (level.invalid) {
+      level.markAsTouched();
+      this.levelError.set('El nivel debe ser un número entero entre 0 y 255.');
+      return;
+    }
+
+    this.levelError.set(null);
     this.navigate(searchCardsCatalog(this.catalogState(), this.filters.getRawValue()));
   }
 
   protected clearFilters(): void {
     this.filters.reset({ name: '', type: '', attribute: '', race: '', level: null });
+    this.levelError.set(null);
     this.navigate(clearCardsCatalogFilters(this.catalogState()));
   }
 
@@ -162,4 +182,11 @@ export class CardsPage implements OnInit {
       ? `No se pudo cargar el catálogo (${error.status}).`
       : 'No se pudo cargar el catálogo.';
   }
+}
+
+function levelValidator(control: AbstractControl<number | null>): ValidationErrors | null {
+  const value = control.value;
+  return value === null || (Number.isInteger(value) && value >= 0 && value <= 255)
+    ? null
+    : { level: true };
 }

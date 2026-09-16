@@ -2,6 +2,22 @@
   display: block;
 }
 
+.skip-link {
+  background: var(--accent-strong);
+  color: #fff;
+  left: 1rem;
+  padding: var(--space-2) var(--space-3);
+  position: fixed;
+  text-decoration: none;
+  top: 0;
+  transform: translateY(-120%);
+  z-index: 1;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .site-header {
   background: var(--surface);
   border-bottom: 4px solid var(--accent);

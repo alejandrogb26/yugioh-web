@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, convertToParamMap, provideRouter } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, of, throwError } from 'rxjs';
 import { vi } from 'vitest';
@@ -50,6 +51,7 @@ const CARD: CardDetail = {
 describe('CardDetailPage', () => {
   let fixture: ComponentFixture<CardDetailPage>;
   let params: BehaviorSubject<ParamMap>;
+  let title: Title;
   const cardsApi = {
     searchCards: vi.fn<(params: CardSearchParams) => Observable<PageResponse<CardSummary>>>(),
     getCard: vi.fn<(id: number) => Observable<CardDetail>>(),
@@ -77,11 +79,13 @@ describe('CardDetailPage', () => {
 
     fixture = TestBed.createComponent(CardDetailPage);
     fixture.detectChanges();
+    title = TestBed.inject(Title);
   });
 
   it('loads a valid ID and renders its public detail, sets and secure external links', () => {
     expect(cardsApi.getCard).toHaveBeenCalledWith(32864);
     expect(cardsApi.getCardImages).not.toHaveBeenCalled();
+    expect(title.getTitle()).toBe('Dark Magician | Yu-Gi-Oh! First Generation');
 
     const page = fixture.nativeElement as HTMLElement;
     expect(page.textContent).toContain('Dark Magician');
@@ -95,16 +99,19 @@ describe('CardDetailPage', () => {
     ).toBe('noopener noreferrer');
   });
 
-  it.each(['abc', '0', '-1'])('does not request the API for invalid ID %s', (id) => {
-    cardsApi.getCard.mockClear();
-    params.next(convertToParamMap({ id }));
-    fixture.detectChanges();
+  it.each(['abc', '0', '-1', '1.5', '9007199254740992'])(
+    'does not request the API for invalid ID %s',
+    (id) => {
+      cardsApi.getCard.mockClear();
+      params.next(convertToParamMap({ id }));
+      fixture.detectChanges();
 
-    expect(cardsApi.getCard).not.toHaveBeenCalled();
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain(
-      'identificador de carta no es válido',
-    );
-  });
+      expect(cardsApi.getCard).not.toHaveBeenCalled();
+      expect((fixture.nativeElement as HTMLElement).textContent).toContain(
+        'identificador de carta no es válido',
+      );
+    },
+  );
 
   it('shows loading and then the correct card when the route ID changes', () => {
     const request = new Subject<CardDetail>();
@@ -129,6 +136,7 @@ describe('CardDetailPage', () => {
     fixture.detectChanges();
 
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('Carta no encontrada');
+    expect(title.getTitle()).toBe('Carta no encontrada | Yu-Gi-Oh! First Generation');
   });
 
   it('shows a generic message for other request errors', () => {
@@ -169,6 +177,18 @@ describe('CardDetailPage', () => {
     expect(page.textContent).toContain('No hay sets registrados');
     expect(page.textContent).not.toContain('null');
     expect(page.textContent).not.toContain('undefined');
+    expect(cardsApi.getCardImages).not.toHaveBeenCalled();
+  });
+
+  it('selects another image without a metadata request', () => {
+    const page = fixture.nativeElement as HTMLElement;
+    const buttons = page.querySelectorAll<HTMLButtonElement>('.image-picker button');
+
+    buttons[1]?.click();
+    fixture.detectChanges();
+
+    expect(page.querySelector('img')?.getAttribute('src')).toBe('/api/v1/images/2.jpg');
+    expect(buttons[1]?.getAttribute('aria-pressed')).toBe('true');
     expect(cardsApi.getCardImages).not.toHaveBeenCalled();
   });
 });

@@ -12,5 +12,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/cards/pages/card-detail-page').then((module) => module.CardDetailPage),
   },
-  { path: '**', redirectTo: 'cards' },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/not-found/not-found-page').then((module) => module.NotFoundPage),
+  },
 ];

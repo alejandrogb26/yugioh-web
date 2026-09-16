@@ -1,4 +1,4 @@
-<section class="catalog-page">
+<section class="catalog-page" [attr.aria-busy]="loading()">
   <header class="catalog-header">
     <p class="eyebrow">Índice de cartas</p>
     <h1>Catálogo</h1>
@@ -11,9 +11,21 @@
       <label>Tipo <input type="text" formControlName="type" /></label>
       <label>Atributo <input type="text" formControlName="attribute" /></label>
       <label>Raza <input type="text" formControlName="race" /></label>
-      <label
-        >Nivel <input type="number" min="0" max="255" step="1" formControlName="level"
-      /></label>
+      <label>
+        Nivel
+        <input
+          type="number"
+          min="0"
+          max="255"
+          step="1"
+          formControlName="level"
+          [attr.aria-describedby]="levelError() ? 'level-error' : null"
+          [attr.aria-invalid]="filters.controls.level.invalid && filters.controls.level.touched"
+        />
+      </label>
+      @if (levelError(); as message) {
+        <p id="level-error" class="field-error" role="alert">{{ message }}</p>
+      }
     </div>
     <div class="actions">
       <button type="submit">Buscar</button>
@@ -23,7 +35,7 @@
     </div>
   </form>
 
-  <div class="catalog-controls" aria-label="Controles del catálogo">
+  <div class="catalog-controls">
     <label>
       Ordenar por
       <select
@@ -65,13 +77,14 @@
   </div>
 
   @if (loading()) {
-    <p class="catalog-state" aria-live="polite">Cargando cartas...</p>
+    <p class="catalog-state" role="status">Cargando cartas...</p>
   } @else if (error(); as message) {
     <p class="catalog-state catalog-error" role="alert">{{ message }}</p>
   } @else if (response(); as page) {
     @if (page.content.length === 0) {
-      <p class="catalog-state">No hay cartas que mostrar.</p>
+      <p class="catalog-state" role="status">No hay cartas que mostrar.</p>
     } @else {
+      <p class="results-summary" role="status">{{ page.totalElements }} cartas encontradas.</p>
       <ul class="cards-list">
         @for (card of page.content; track card.id) {
           <li class="card-entry">

@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.not-found {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 42rem;
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+.not-found h1 {
+  margin-top: 0;
+}

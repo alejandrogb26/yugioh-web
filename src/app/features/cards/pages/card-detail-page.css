@@ -7,6 +7,18 @@
   gap: var(--space-3);
 }
 
+.detail-feedback {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-4);
+}
+
+.detail-feedback h1 {
+  margin-top: 0;
+}
+
 .back-link {
   align-items: center;
   display: inline-flex;

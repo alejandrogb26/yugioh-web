@@ -2,8 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { EMPTY, catchError, map, switchMap, tap } from 'rxjs';
 import { CardsApiService } from '../../../core/api/cards-api.service';
+import { pageTitle } from '../../../core/page-title';
 import { CardDetail, CardImage } from '../../../core/models/card.models';
 
 @Component({
@@ -15,6 +17,7 @@ export class CardDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly cardsApi = inject(CardsApiService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly title = inject(Title);
 
   protected readonly card = signal<CardDetail | null>(null);
   protected readonly loading = signal(true);
@@ -34,6 +37,7 @@ export class CardDetailPage implements OnInit {
           this.selectedImageId.set(null);
           this.error.set(id === null ? 'El identificador de carta no es válido.' : null);
           this.loading.set(id !== null);
+          this.title.setTitle(pageTitle(id === null ? 'Carta no encontrada' : 'Cargando carta'));
         }),
         switchMap((id) => {
           if (id === null) {
@@ -54,6 +58,7 @@ export class CardDetailPage implements OnInit {
         this.card.set(card);
         this.selectedImageId.set(card.images[0]?.imageId ?? null);
         this.loading.set(false);
+        this.title.setTitle(pageTitle(card.name));
       });
   }
 
@@ -75,9 +80,9 @@ export class CardDetailPage implements OnInit {
   }
 
   private toMessage(error: unknown): string {
-    return error instanceof HttpErrorResponse && error.status === 404
-      ? 'Carta no encontrada.'
-      : 'No se pudo cargar la carta.';
+    const notFound = error instanceof HttpErrorResponse && error.status === 404;
+    this.title.setTitle(pageTitle(notFound ? 'Carta no encontrada' : 'Error al cargar la carta'));
+    return notFound ? 'Carta no encontrada.' : 'No se pudo cargar la carta.';
   }
 }
 
