@@ -5,6 +5,33 @@
   padding: 0;
 }
 
+form,
+.catalog-controls {
+  border: 1px solid #d7d7d7;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.filter-grid,
+.catalog-controls,
+.actions,
+.pagination {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pagination {
+  align-items: center;
+  justify-content: space-between;
+}
+
 .cards-list li {
   border: 1px solid #d7d7d7;
   padding: 1rem;

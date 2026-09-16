@@ -1,44 +1,113 @@
 <section>
   <h1>Cartas</h1>
 
+  <form [formGroup]="filters" (ngSubmit)="search()">
+    <div class="filter-grid">
+      <label>Nombre <input type="search" formControlName="name" /></label>
+      <label>Tipo <input type="text" formControlName="type" /></label>
+      <label>Atributo <input type="text" formControlName="attribute" /></label>
+      <label>Raza <input type="text" formControlName="race" /></label>
+      <label
+        >Nivel <input type="number" min="0" max="255" step="1" formControlName="level"
+      /></label>
+    </div>
+    <div class="actions">
+      <button type="submit">Buscar</button>
+      <button type="button" (click)="clearFilters()">Limpiar filtros</button>
+    </div>
+  </form>
+
+  <div class="catalog-controls">
+    <label>
+      Ordenar por
+      <select
+        #sortFieldControl
+        [value]="sortField()"
+        (change)="changeSortField(sortFieldControl.value)"
+      >
+        @for (field of sortFields; track field) {
+          <option [value]="field">{{ sortLabels[field] }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      Dirección
+      <select
+        #sortDirectionControl
+        [value]="sortDirection()"
+        (change)="changeSortDirection(sortDirectionControl.value)"
+      >
+        @for (direction of sortDirections; track direction) {
+          <option [value]="direction">
+            {{ direction === 'asc' ? 'Ascendente' : 'Descendente' }}
+          </option>
+        }
+      </select>
+    </label>
+    <label>
+      Cartas por página
+      <select
+        #pageSizeControl
+        [value]="catalogState().size"
+        (change)="changeSize(pageSizeControl.value)"
+      >
+        @for (size of pageSizes; track size) {
+          <option [value]="size">{{ size }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
   @if (loading()) {
     <p aria-live="polite">Cargando cartas...</p>
   } @else if (error(); as message) {
     <p role="alert">{{ message }}</p>
-  } @else if (cards().length === 0) {
-    <p>No hay cartas que mostrar.</p>
-  } @else {
-    <ul class="cards-list">
-      @for (card of cards(); track card.id) {
-        <li>
-          <a [routerLink]="['/cards', card.id]">{{ card.name }}</a>
-          @if (card.nameEs) {
-            <span> ({{ card.nameEs }})</span>
-          }
-          <dl>
-            <div>
-              <dt>Tipo</dt>
-              <dd>{{ card.cardType }}</dd>
-            </div>
-            <div>
-              <dt>Atributo</dt>
-              <dd>{{ card.attribute ?? '-' }}</dd>
-            </div>
-            <div>
-              <dt>Nivel</dt>
-              <dd>{{ card.level ?? '-' }}</dd>
-            </div>
-            <div>
-              <dt>ATK</dt>
-              <dd>{{ card.atk ?? '-' }}</dd>
-            </div>
-            <div>
-              <dt>DEF</dt>
-              <dd>{{ card.def ?? '-' }}</dd>
-            </div>
-          </dl>
-        </li>
-      }
-    </ul>
+  } @else if (response(); as page) {
+    @if (page.content.length === 0) {
+      <p>No hay cartas que mostrar.</p>
+    } @else {
+      <ul class="cards-list">
+        @for (card of page.content; track card.id) {
+          <li>
+            <a [routerLink]="['/cards', card.id]">{{ card.name }}</a>
+            @if (card.nameEs) {
+              <span> ({{ card.nameEs }})</span>
+            }
+            <dl>
+              <div>
+                <dt>Tipo</dt>
+                <dd>{{ card.cardType }}</dd>
+              </div>
+              <div>
+                <dt>Atributo</dt>
+                <dd>{{ card.attribute ?? '-' }}</dd>
+              </div>
+              <div>
+                <dt>Raza</dt>
+                <dd>{{ card.race ?? '-' }}</dd>
+              </div>
+              <div>
+                <dt>Nivel</dt>
+                <dd>{{ card.level ?? '-' }}</dd>
+              </div>
+              <div>
+                <dt>ATK</dt>
+                <dd>{{ card.atk ?? '-' }}</dd>
+              </div>
+              <div>
+                <dt>DEF</dt>
+                <dd>{{ card.def ?? '-' }}</dd>
+              </div>
+            </dl>
+          </li>
+        }
+      </ul>
+    }
+
+    <nav class="pagination" aria-label="Paginación">
+      <button type="button" [disabled]="page.first" (click)="previousPage()">Anterior</button>
+      <p>Página {{ page.page + 1 }} de {{ page.totalPages }} · {{ page.totalElements }} cartas</p>
+      <button type="button" [disabled]="page.last" (click)="nextPage()">Siguiente</button>
+    </nav>
   }
 </section>
