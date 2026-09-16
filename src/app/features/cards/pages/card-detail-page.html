@@ -1,40 +1,135 @@
 <section>
-  <a routerLink="/cards">Volver al listado</a>
+  <a routerLink="/cards">Volver al catálogo</a>
 
   @if (loading()) {
     <p aria-live="polite">Cargando carta...</p>
   } @else if (error(); as message) {
     <p role="alert">{{ message }}</p>
   } @else if (card(); as item) {
-    <h1>{{ item.name }}</h1>
-    @if (item.nameEs) {
-      <p>{{ item.nameEs }}</p>
-    }
-    @if (firstImage(); as image) {
-      <img [src]="image.imageUrl" [alt]="item.name" />
-    }
-    <p>{{ item.description }}</p>
-    <dl>
-      <div>
-        <dt>Tipo</dt>
-        <dd>{{ item.cardType }}</dd>
-      </div>
-      <div>
-        <dt>Atributo</dt>
-        <dd>{{ item.attribute ?? '-' }}</dd>
-      </div>
-      <div>
-        <dt>Nivel</dt>
-        <dd>{{ item.level ?? '-' }}</dd>
-      </div>
-      <div>
-        <dt>ATK</dt>
-        <dd>{{ item.atk ?? '-' }}</dd>
-      </div>
-      <div>
-        <dt>DEF</dt>
-        <dd>{{ item.def ?? '-' }}</dd>
-      </div>
-    </dl>
+    <article>
+      <header>
+        <h1>{{ item.name }}</h1>
+        @if (item.nameEs) {
+          <p>{{ item.nameEs }}</p>
+        }
+      </header>
+
+      <section class="card-overview" aria-label="Datos principales">
+        <div class="image-panel">
+          @if (selectedImage(); as image) {
+            <img [src]="image.imageUrl" [alt]="item.name + ' - imagen principal'" />
+            @if (item.images.length > 1) {
+              <div class="image-picker" aria-label="Otras imágenes">
+                @for (option of item.images; track option.imageId; let index = $index) {
+                  <button
+                    type="button"
+                    [attr.aria-pressed]="option.imageId === selectedImageId()"
+                    (click)="selectImage(option.imageId)"
+                  >
+                    Ver imagen {{ index + 1 }}
+                  </button>
+                }
+              </div>
+            }
+          } @else {
+            <p class="image-placeholder">No hay imágenes registradas para esta carta.</p>
+          }
+        </div>
+
+        <dl>
+          <div>
+            <dt>Tipo</dt>
+            <dd>{{ item.cardType }}</dd>
+          </div>
+          <div>
+            <dt>Frame</dt>
+            <dd>{{ item.frameType }}</dd>
+          </div>
+          <div>
+            <dt>Atributo</dt>
+            <dd>{{ item.attribute ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt>Raza</dt>
+            <dd>{{ item.race ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt>Nivel</dt>
+            <dd>{{ item.level ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt>ATK</dt>
+            <dd>{{ item.atk ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt>DEF</dt>
+            <dd>{{ item.def ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt>Arquetipo</dt>
+            <dd>{{ item.archetype ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt>Tiene efecto</dt>
+            <dd>{{ effectLabel(item.hasEffect) }}</dd>
+          </div>
+          <div>
+            <dt>Fecha TCG</dt>
+            <dd>{{ formatDate(item.tcgDate) }}</dd>
+          </div>
+          <div>
+            <dt>Fecha OCG</dt>
+            <dd>{{ formatDate(item.ocgDate) }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section aria-labelledby="description-heading">
+        <h2 id="description-heading">Descripción</h2>
+        <p class="description">{{ item.description }}</p>
+      </section>
+
+      <section aria-labelledby="sets-heading">
+        <h2 id="sets-heading">Sets</h2>
+        @if (item.sets.length === 0) {
+          <p>No hay sets registrados.</p>
+        } @else {
+          <ul class="sets-list">
+            @for (set of item.sets; track set.id) {
+              <li>
+                <strong>{{ set.setName }}</strong>
+                <span>{{ set.setCode }}</span>
+                @if (set.setRarity) {
+                  <span>{{ set.setRarity }}</span>
+                }
+                @if (set.setRarityCode) {
+                  <span>{{ set.setRarityCode }}</span>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      @if (item.ygoprodeckUrl || item.fandomUrl) {
+        <section aria-labelledby="links-heading">
+          <h2 id="links-heading">Enlaces</h2>
+          <ul>
+            @if (item.ygoprodeckUrl) {
+              <li>
+                <a [href]="item.ygoprodeckUrl" target="_blank" rel="noopener noreferrer"
+                  >YGOPRODeck</a
+                >
+              </li>
+            }
+            @if (item.fandomUrl) {
+              <li>
+                <a [href]="item.fandomUrl" target="_blank" rel="noopener noreferrer">Fandom</a>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    </article>
   }
 </section>
