@@ -1,55 +1,214 @@
-.cards-list {
+:host {
+  display: block;
+}
+
+.catalog-page {
   display: grid;
-  gap: 1rem;
-  list-style: none;
-  padding: 0;
+  gap: var(--space-4);
 }
 
-form,
-.catalog-controls {
-  border: 1px solid #d7d7d7;
-  margin: 1rem 0;
-  padding: 1rem;
+.catalog-header {
+  border-left: 0.35rem solid var(--accent);
+  max-width: 48rem;
+  padding-left: var(--space-3);
 }
 
-.filter-grid,
+.catalog-header h1 {
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0.2rem 0 var(--space-2);
+}
+
+.catalog-header p:last-child {
+  color: var(--muted);
+  margin: 0;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-family: Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.filter-panel,
 .catalog-controls,
-.actions,
-.pagination {
-  align-items: end;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.catalog-state {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.filter-panel {
+  padding: var(--space-4);
+}
+
+.filter-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 label {
+  color: var(--muted);
   display: grid;
-  gap: 0.25rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: 0.4rem;
+  letter-spacing: 0.03em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.secondary-action {
+  background: transparent;
+  color: var(--accent-strong);
+}
+
+.secondary-action:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.catalog-controls {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.catalog-controls label {
+  flex: 1 1 11rem;
+}
+
+.catalog-state {
+  color: var(--muted);
+  margin: 0;
+  padding: var(--space-4);
+}
+
+.catalog-error {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.cards-list {
+  display: grid;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card-entry {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgb(42 48 43 / 7%);
+  overflow: hidden;
+}
+
+.card-entry article {
+  border-left: 0.3rem solid var(--accent-soft);
+  padding: var(--space-3) var(--space-4);
+}
+
+.card-entry header {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.card-entry header a {
+  color: var(--accent-strong);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.card-entry header p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.card-facts {
+  display: grid;
+  gap: var(--space-2) var(--space-3);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 0;
+}
+
+.card-facts div {
+  min-width: 0;
+}
+
+dt {
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+dd {
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
 }
 
 .pagination {
   align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   justify-content: space-between;
 }
 
-.cards-list li {
-  border: 1px solid #d7d7d7;
-  padding: 1rem;
-}
-
-dl {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 0;
-}
-
-dt,
-dd {
-  display: inline;
+.pagination p {
+  color: var(--muted);
   margin: 0;
+  text-align: center;
 }
 
-dt::after {
-  content: ': ';
+@media (max-width: 58rem) {
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 34rem) {
+  .filter-panel,
+  .catalog-controls {
+    padding: var(--space-3);
+  }
+
+  .filter-grid,
+  .card-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pagination button {
+    width: 100%;
+  }
 }

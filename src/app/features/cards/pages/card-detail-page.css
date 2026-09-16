@@ -2,76 +2,205 @@
   display: block;
 }
 
-article {
-  margin-top: 1rem;
+.detail-page {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.back-link {
+  align-items: center;
+  display: inline-flex;
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.back-link::before {
+  content: '←';
+  margin-right: 0.4rem;
+}
+
+.detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.detail-header {
+  background: linear-gradient(135deg, var(--accent-strong), var(--accent));
+  color: #fff;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.detail-header h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0;
+}
+
+.detail-header p {
+  color: #e4f0eb;
+  font-size: 1.1rem;
+  margin: var(--space-1) 0 0;
+}
+
+.card-overview,
+.detail-section {
+  margin: 0;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 .card-overview {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
-  margin: 1.5rem 0;
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+  grid-template-columns: minmax(0, 19rem) minmax(0, 1fr);
+}
+
+.image-panel {
+  align-self: start;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  padding: var(--space-2);
 }
 
 img {
   display: block;
   height: auto;
+  margin: 0 auto;
+  max-height: min(68vh, 32rem);
   max-width: 100%;
+  object-fit: contain;
 }
 
 .image-placeholder {
-  border: 1px solid #d7d7d7;
+  color: var(--muted);
   margin: 0;
-  padding: 2rem 1rem;
+  padding: var(--space-5) var(--space-2);
+  text-align: center;
 }
 
 .image-picker {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
 }
 
-dl {
+.image-picker button {
+  background: transparent;
+  color: var(--accent-strong);
+  min-height: 2.25rem;
+}
+
+.image-picker button[aria-pressed='true'] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.detail-facts {
   display: grid;
-  gap: 0.5rem 1rem;
+  gap: 0.75rem 1.25rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
 }
 
-dt,
-dd {
-  display: inline;
-  margin: 0;
+.detail-facts div {
+  border-bottom: 1px solid var(--border);
+  min-width: 0;
+  padding-bottom: var(--space-2);
 }
 
-dt::after {
-  content: ': ';
+.detail-facts dt {
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.detail-facts dd {
+  margin: 0.2rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.detail-section {
+  border-top: 1px solid var(--border);
+}
+
+.detail-section h2 {
+  color: var(--accent-strong);
+  font-size: 1.25rem;
+  margin: 0 0 var(--space-2);
 }
 
 .description {
+  line-height: 1.7;
+  margin: 0;
+  max-width: 75ch;
   white-space: pre-wrap;
 }
 
 .sets-list {
   display: grid;
-  gap: 0.5rem;
+  gap: var(--space-2);
   list-style: none;
+  margin: 0;
   padding: 0;
 }
 
 .sets-list li {
+  align-items: baseline;
+  background: var(--surface-muted);
+  border-left: 0.25rem solid var(--accent-soft);
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1rem;
+  gap: 0.25rem var(--space-3);
+  padding: var(--space-2) var(--space-3);
 }
 
-@media (max-width: 42rem) {
+.sets-list strong {
+  color: var(--accent-strong);
+}
+
+.detail-section ul:not(.sets-list) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-section ul:not(.sets-list) a {
+  font-family: Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+@media (max-width: 46rem) {
   .card-overview {
     grid-template-columns: 1fr;
   }
 
-  dl {
+  .image-panel {
+    max-width: 22rem;
+  }
+}
+
+@media (max-width: 32rem) {
+  .detail-facts {
     grid-template-columns: 1fr;
+  }
+
+  .sets-list li {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
   }
 }

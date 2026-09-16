@@ -1,7 +1,15 @@
 <header class="site-header">
-  <a routerLink="/cards">Yu-Gi-Oh! First Generation</a>
+  <div class="shell-header">
+    <a class="brand" routerLink="/cards">
+      <span class="brand-kicker">Archivo de primera generación</span>
+      <span>Yu-Gi-Oh! First Generation</span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <a routerLink="/cards">Catálogo</a>
+    </nav>
+  </div>
 </header>
 
-<main>
+<main class="app-main">
   <router-outlet />
 </main>

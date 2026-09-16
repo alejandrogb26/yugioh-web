@@ -1,1 +1,111 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #e8e2d5;
+  --surface: #faf8f2;
+  --surface-muted: #f0eadf;
+  --text: #1d2928;
+  --muted: #63706c;
+  --border: #c9c1b2;
+  --accent: #315d57;
+  --accent-strong: #1d413d;
+  --accent-soft: #d7e4df;
+  --danger: #8a3334;
+  --shadow: 0 10px 24px rgb(42 48 43 / 10%);
+  --radius: 0.5rem;
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.25rem;
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(50% - 36rem),
+      rgb(49 93 87 / 5%) calc(50% - 36rem),
+      transparent calc(50% - 35.9rem)
+    ),
+    var(--bg);
+  line-height: 1.5;
+  margin: 0;
+  min-width: 20rem;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+input,
+select {
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+}
+
+input,
+select {
+  background: var(--surface);
+  color: var(--text);
+  min-height: 2.6rem;
+  padding: 0.45rem 0.6rem;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  min-height: 2.6rem;
+  padding: 0.45rem 0.9rem;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+a {
+  color: var(--accent-strong);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+a:hover {
+  color: var(--danger);
+}
+
+:focus-visible {
+  outline: 3px solid #d08c35;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a,
+  button,
+  input,
+  select {
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      box-shadow 150ms ease,
+      color 150ms ease;
+  }
+}

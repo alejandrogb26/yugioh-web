@@ -1,7 +1,11 @@
-<section>
-  <h1>Cartas</h1>
+<section class="catalog-page">
+  <header class="catalog-header">
+    <p class="eyebrow">Índice de cartas</p>
+    <h1>Catálogo</h1>
+    <p>Consulta las cartas de primera generación por nombre, tipo, atributo y estadísticas.</p>
+  </header>
 
-  <form [formGroup]="filters" (ngSubmit)="search()">
+  <form class="filter-panel" [formGroup]="filters" (ngSubmit)="search()">
     <div class="filter-grid">
       <label>Nombre <input type="search" formControlName="name" /></label>
       <label>Tipo <input type="text" formControlName="type" /></label>
@@ -13,11 +17,13 @@
     </div>
     <div class="actions">
       <button type="submit">Buscar</button>
-      <button type="button" (click)="clearFilters()">Limpiar filtros</button>
+      <button class="secondary-action" type="button" (click)="clearFilters()">
+        Limpiar filtros
+      </button>
     </div>
   </form>
 
-  <div class="catalog-controls">
+  <div class="catalog-controls" aria-label="Controles del catálogo">
     <label>
       Ordenar por
       <select
@@ -59,55 +65,61 @@
   </div>
 
   @if (loading()) {
-    <p aria-live="polite">Cargando cartas...</p>
+    <p class="catalog-state" aria-live="polite">Cargando cartas...</p>
   } @else if (error(); as message) {
-    <p role="alert">{{ message }}</p>
+    <p class="catalog-state catalog-error" role="alert">{{ message }}</p>
   } @else if (response(); as page) {
     @if (page.content.length === 0) {
-      <p>No hay cartas que mostrar.</p>
+      <p class="catalog-state">No hay cartas que mostrar.</p>
     } @else {
       <ul class="cards-list">
         @for (card of page.content; track card.id) {
-          <li>
-            <a [routerLink]="['/cards', card.id]">{{ card.name }}</a>
-            @if (card.nameEs) {
-              <span> ({{ card.nameEs }})</span>
-            }
-            <dl>
-              <div>
-                <dt>Tipo</dt>
-                <dd>{{ card.cardType }}</dd>
-              </div>
-              <div>
-                <dt>Atributo</dt>
-                <dd>{{ card.attribute ?? '-' }}</dd>
-              </div>
-              <div>
-                <dt>Raza</dt>
-                <dd>{{ card.race ?? '-' }}</dd>
-              </div>
-              <div>
-                <dt>Nivel</dt>
-                <dd>{{ card.level ?? '-' }}</dd>
-              </div>
-              <div>
-                <dt>ATK</dt>
-                <dd>{{ card.atk ?? '-' }}</dd>
-              </div>
-              <div>
-                <dt>DEF</dt>
-                <dd>{{ card.def ?? '-' }}</dd>
-              </div>
-            </dl>
+          <li class="card-entry">
+            <article>
+              <header>
+                <a [routerLink]="['/cards', card.id]">{{ card.name }}</a>
+                @if (card.nameEs) {
+                  <p>{{ card.nameEs }}</p>
+                }
+              </header>
+              <dl class="card-facts">
+                <div>
+                  <dt>Tipo</dt>
+                  <dd>{{ card.cardType }}</dd>
+                </div>
+                <div>
+                  <dt>Atributo</dt>
+                  <dd>{{ card.attribute ?? '—' }}</dd>
+                </div>
+                <div>
+                  <dt>Raza</dt>
+                  <dd>{{ card.race ?? '—' }}</dd>
+                </div>
+                <div>
+                  <dt>Nivel</dt>
+                  <dd>{{ card.level ?? '—' }}</dd>
+                </div>
+                <div>
+                  <dt>ATK</dt>
+                  <dd>{{ card.atk ?? '—' }}</dd>
+                </div>
+                <div>
+                  <dt>DEF</dt>
+                  <dd>{{ card.def ?? '—' }}</dd>
+                </div>
+              </dl>
+            </article>
           </li>
         }
       </ul>
     }
 
-    <nav class="pagination" aria-label="Paginación">
-      <button type="button" [disabled]="page.first" (click)="previousPage()">Anterior</button>
-      <p>Página {{ page.page + 1 }} de {{ page.totalPages }} · {{ page.totalElements }} cartas</p>
-      <button type="button" [disabled]="page.last" (click)="nextPage()">Siguiente</button>
-    </nav>
+    @if (page.totalPages > 0) {
+      <nav class="pagination" aria-label="Paginación">
+        <button type="button" [disabled]="page.first" (click)="previousPage()">Anterior</button>
+        <p>Página {{ page.page + 1 }} de {{ page.totalPages }} · {{ page.totalElements }} cartas</p>
+        <button type="button" [disabled]="page.last" (click)="nextPage()">Siguiente</button>
+      </nav>
+    }
   }
 </section>

@@ -1,13 +1,13 @@
-<section>
-  <a routerLink="/cards">Volver al catálogo</a>
+<section class="detail-page">
+  <a class="back-link" routerLink="/cards">Volver al catálogo</a>
 
   @if (loading()) {
     <p aria-live="polite">Cargando carta...</p>
   } @else if (error(); as message) {
     <p role="alert">{{ message }}</p>
   } @else if (card(); as item) {
-    <article>
-      <header>
+    <article class="detail-card">
+      <header class="detail-header">
         <h1>{{ item.name }}</h1>
         @if (item.nameEs) {
           <p>{{ item.nameEs }}</p>
@@ -36,7 +36,7 @@
           }
         </div>
 
-        <dl>
+        <dl class="detail-facts">
           <div>
             <dt>Tipo</dt>
             <dd>{{ item.cardType }}</dd>
@@ -84,12 +84,12 @@
         </dl>
       </section>
 
-      <section aria-labelledby="description-heading">
+      <section class="detail-section" aria-labelledby="description-heading">
         <h2 id="description-heading">Descripción</h2>
         <p class="description">{{ item.description }}</p>
       </section>
 
-      <section aria-labelledby="sets-heading">
+      <section class="detail-section" aria-labelledby="sets-heading">
         <h2 id="sets-heading">Sets</h2>
         @if (item.sets.length === 0) {
           <p>No hay sets registrados.</p>
@@ -112,7 +112,7 @@
       </section>
 
       @if (item.ygoprodeckUrl || item.fandomUrl) {
-        <section aria-labelledby="links-heading">
+        <section class="detail-section" aria-labelledby="links-heading">
           <h2 id="links-heading">Enlaces</h2>
           <ul>
             @if (item.ygoprodeckUrl) {
