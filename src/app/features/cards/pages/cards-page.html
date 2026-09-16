@@ -1,0 +1,44 @@
+<section>
+  <h1>Cartas</h1>
+
+  @if (loading()) {
+    <p aria-live="polite">Cargando cartas...</p>
+  } @else if (error(); as message) {
+    <p role="alert">{{ message }}</p>
+  } @else if (cards().length === 0) {
+    <p>No hay cartas que mostrar.</p>
+  } @else {
+    <ul class="cards-list">
+      @for (card of cards(); track card.id) {
+        <li>
+          <a [routerLink]="['/cards', card.id]">{{ card.name }}</a>
+          @if (card.nameEs) {
+            <span> ({{ card.nameEs }})</span>
+          }
+          <dl>
+            <div>
+              <dt>Tipo</dt>
+              <dd>{{ card.cardType }}</dd>
+            </div>
+            <div>
+              <dt>Atributo</dt>
+              <dd>{{ card.attribute ?? '-' }}</dd>
+            </div>
+            <div>
+              <dt>Nivel</dt>
+              <dd>{{ card.level ?? '-' }}</dd>
+            </div>
+            <div>
+              <dt>ATK</dt>
+              <dd>{{ card.atk ?? '-' }}</dd>
+            </div>
+            <div>
+              <dt>DEF</dt>
+              <dd>{{ card.def ?? '-' }}</dd>
+            </div>
+          </dl>
+        </li>
+      }
+    </ul>
+  }
+</section>

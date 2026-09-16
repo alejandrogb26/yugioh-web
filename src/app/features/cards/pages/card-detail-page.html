@@ -1,0 +1,40 @@
+<section>
+  <a routerLink="/cards">Volver al listado</a>
+
+  @if (loading()) {
+    <p aria-live="polite">Cargando carta...</p>
+  } @else if (error(); as message) {
+    <p role="alert">{{ message }}</p>
+  } @else if (card(); as item) {
+    <h1>{{ item.name }}</h1>
+    @if (item.nameEs) {
+      <p>{{ item.nameEs }}</p>
+    }
+    @if (firstImage(); as image) {
+      <img [src]="image.imageUrl" [alt]="item.name" />
+    }
+    <p>{{ item.description }}</p>
+    <dl>
+      <div>
+        <dt>Tipo</dt>
+        <dd>{{ item.cardType }}</dd>
+      </div>
+      <div>
+        <dt>Atributo</dt>
+        <dd>{{ item.attribute ?? '-' }}</dd>
+      </div>
+      <div>
+        <dt>Nivel</dt>
+        <dd>{{ item.level ?? '-' }}</dd>
+      </div>
+      <div>
+        <dt>ATK</dt>
+        <dd>{{ item.atk ?? '-' }}</dd>
+      </div>
+      <div>
+        <dt>DEF</dt>
+        <dd>{{ item.def ?? '-' }}</dd>
+      </div>
+    </dl>
+  }
+</section>
