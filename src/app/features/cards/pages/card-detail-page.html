@@ -15,6 +15,7 @@
   } @else if (card(); as item) {
     <article class="detail-card">
       <header class="detail-header">
+        <span class="header-ornament" aria-hidden="true"></span>
         <h1>{{ item.name }}</h1>
         @if (item.nameEs) {
           <p>{{ item.nameEs }}</p>
@@ -62,13 +63,13 @@
           </div>
           <div>
             <dt>Nivel</dt>
-            <dd>{{ item.level ?? '—' }}</dd>
+            <dd><span class="level-mark" aria-hidden="true">✦</span>{{ item.level ?? '—' }}</dd>
           </div>
-          <div>
+          <div class="detail-stat">
             <dt>ATK</dt>
             <dd>{{ item.atk ?? '—' }}</dd>
           </div>
-          <div>
+          <div class="detail-stat">
             <dt>DEF</dt>
             <dd>{{ item.def ?? '—' }}</dd>
           </div>
@@ -92,12 +93,12 @@
       </section>
 
       <section class="detail-section" aria-labelledby="description-heading">
-        <h2 id="description-heading">Descripción</h2>
+        <h2 id="description-heading">Inscripción de la carta</h2>
         <p class="description">{{ item.description }}</p>
       </section>
 
       <section class="detail-section" aria-labelledby="sets-heading">
-        <h2 id="sets-heading">Sets</h2>
+        <h2 id="sets-heading">Registro de ediciones</h2>
         @if (item.sets.length === 0) {
           <p>No hay sets registrados.</p>
         } @else {
@@ -120,7 +121,7 @@
 
       @if (item.ygoprodeckUrl || item.fandomUrl) {
         <section class="detail-section" aria-labelledby="links-heading">
-          <h2 id="links-heading">Enlaces</h2>
+          <h2 id="links-heading">Referencias del archivo</h2>
           <ul>
             @if (item.ygoprodeckUrl) {
               <li>

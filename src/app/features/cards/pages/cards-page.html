@@ -1,11 +1,12 @@
 <section class="catalog-page" [attr.aria-busy]="loading()">
   <header class="catalog-header">
-    <p class="eyebrow">Índice de cartas</p>
-    <h1>Catálogo</h1>
-    <p>Consulta las cartas de primera generación por nombre, tipo, atributo y estadísticas.</p>
+    <p class="eyebrow">Archivo de duelista</p>
+    <h1>Archivo de cartas</h1>
+    <p>Consulta los registros de primera generación por nombre, tipo, atributo y estadísticas.</p>
   </header>
 
   <form class="filter-panel" [formGroup]="filters" (ngSubmit)="search()">
+    <h2 class="panel-title">Búsqueda en el archivo</h2>
     <div class="filter-grid">
       <label>Nombre <input type="search" formControlName="name" /></label>
       <label>Tipo <input type="text" formControlName="type" /></label>
@@ -89,6 +90,7 @@
         @for (card of page.content; track card.id) {
           <li class="card-entry">
             <article>
+              <span class="card-corner" aria-hidden="true"></span>
               <header>
                 <a [routerLink]="['/cards', card.id]">{{ card.name }}</a>
                 @if (card.nameEs) {
@@ -110,13 +112,15 @@
                 </div>
                 <div>
                   <dt>Nivel</dt>
-                  <dd>{{ card.level ?? '—' }}</dd>
+                  <dd>
+                    <span class="level-mark" aria-hidden="true">✦</span>{{ card.level ?? '—' }}
+                  </dd>
                 </div>
-                <div>
+                <div class="card-stat">
                   <dt>ATK</dt>
                   <dd>{{ card.atk ?? '—' }}</dd>
                 </div>
-                <div>
+                <div class="card-stat">
                   <dt>DEF</dt>
                   <dd>{{ card.def ?? '—' }}</dd>
                 </div>

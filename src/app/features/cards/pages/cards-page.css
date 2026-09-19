@@ -8,29 +8,44 @@
 }
 
 .catalog-header {
-  border-left: 0.35rem solid var(--accent);
-  max-width: 48rem;
-  padding-left: var(--space-3);
+  border-left: 0.25rem solid var(--gold);
+  max-width: 54rem;
+  padding: var(--space-2) 0 var(--space-2) var(--space-4);
+  position: relative;
+}
+
+.catalog-header::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+  bottom: 0;
+  content: '';
+  height: 1px;
+  left: var(--space-4);
+  position: absolute;
+  width: min(22rem, 70%);
 }
 
 .catalog-header h1 {
-  font-size: clamp(2rem, 5vw, 3.1rem);
-  letter-spacing: -0.04em;
+  color: var(--gold-bright);
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  letter-spacing: 0.035em;
   line-height: 1;
-  margin: 0.2rem 0 var(--space-2);
+  margin: 0.25rem 0 var(--space-2);
+  text-transform: uppercase;
 }
 
 .catalog-header p:last-child {
   color: var(--muted);
   margin: 0;
+  max-width: 42rem;
 }
 
-.eyebrow {
-  color: var(--accent);
-  font-family: Arial, sans-serif;
+.eyebrow,
+.panel-title {
+  color: var(--gold);
+  font-family: var(--font-ui);
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   margin: 0;
   text-transform: uppercase;
 }
@@ -38,14 +53,20 @@
 .filter-panel,
 .catalog-controls,
 .catalog-state {
-  background: var(--surface);
+  background: linear-gradient(135deg, rgb(255 239 189 / 4%), transparent 24%), var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), var(--shadow-inset);
 }
 
 .filter-panel {
   padding: var(--space-4);
+  position: relative;
+}
+
+.panel-title {
+  border-bottom: 1px solid rgb(197 154 61 / 38%);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
 }
 
 .filter-grid {
@@ -55,8 +76,8 @@
 }
 
 .field-error {
-  color: var(--danger);
-  font-family: Arial, sans-serif;
+  color: #ffb1be;
+  font-family: var(--font-ui);
   font-size: 0.85rem;
   grid-column: 1 / -1;
   margin: 0;
@@ -65,11 +86,21 @@
 label {
   color: var(--muted);
   display: grid;
-  font-family: Arial, sans-serif;
-  font-size: 0.78rem;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
   font-weight: 700;
   gap: 0.4rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--gold-bright);
+  box-shadow:
+    0 0 0 2px rgb(113 54 168 / 48%),
+    inset 0 1px 5px rgb(0 0 0 / 40%);
+  outline: none;
 }
 
 .actions {
@@ -79,13 +110,19 @@ label {
   margin-top: var(--space-3);
 }
 
+.actions button {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .secondary-action {
   background: transparent;
-  color: var(--accent-strong);
+  color: var(--muted);
 }
 
 .secondary-action:hover:not(:disabled) {
   background: var(--accent-soft);
+  color: var(--gold-bright);
 }
 
 .catalog-controls {
@@ -104,64 +141,68 @@ label {
   color: var(--muted);
   margin: 0;
   padding: var(--space-4);
-}
-
-.results-summary {
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 0.85rem;
-  margin: 0;
+  text-align: center;
 }
 
 .catalog-error {
   border-color: var(--danger);
-  color: var(--danger);
+  color: #ffb1be;
+}
+
+.results-summary {
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-transform: uppercase;
 }
 
 .cards-list {
   display: grid;
   gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .card-entry {
-  background: var(--surface);
+  background: linear-gradient(145deg, rgb(113 54 168 / 16%), transparent 36%), var(--surface-deep);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 4px 12px rgb(42 48 43 / 7%);
+  box-shadow: var(--shadow), var(--shadow-inset);
   overflow: hidden;
 }
 
 .card-entry article {
-  border-left: 0.3rem solid var(--accent-soft);
+  border: 1px solid rgb(241 215 138 / 12%);
+  margin: 0.32rem;
+  min-height: calc(100% - 0.64rem);
   padding: var(--space-3) var(--space-4);
+  position: relative;
 }
 
 .card-entry header {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-2);
+  border-bottom: 1px solid rgb(197 154 61 / 27%);
   margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  padding-right: var(--space-3);
 }
 
 .card-entry header a {
-  color: var(--accent-strong);
-  font-size: 1.2rem;
+  color: var(--gold-bright);
+  display: block;
+  font-size: 1.22rem;
   font-weight: 700;
-}
-
-.card-entry header p {
-  color: var(--muted);
-  margin: 0;
+  letter-spacing: 0.035em;
+  text-decoration: none;
 }
 
 .card-facts {
   display: grid;
   gap: var(--space-2) var(--space-3);
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
 }
 
@@ -170,31 +211,31 @@ label {
 }
 
 dt {
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 0.67rem;
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 0.63rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 dd {
+  color: var(--text);
   margin: 0.15rem 0 0;
   overflow-wrap: anywhere;
 }
 
-.pagination {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  justify-content: space-between;
+.card-stat {
+  background: rgb(0 0 0 / 22%);
+  border-top: 1px solid rgb(197 154 61 / 36%);
+  padding: var(--space-1) var(--space-2);
 }
 
-.pagination p {
-  color: var(--muted);
-  margin: 0;
-  text-align: center;
+.card-stat dd {
+  color: var(--gold-bright);
+  font-family: var(--font-ui);
+  font-size: 1.08rem;
+  font-weight: 800;
 }
 
 @media (max-width: 58rem) {
@@ -202,8 +243,8 @@ dd {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .card-facts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .cards-list {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -218,12 +259,7 @@ dd {
     grid-template-columns: 1fr;
   }
 
-  .pagination {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .pagination button {
-    width: 100%;
+  .catalog-header {
+    padding-left: var(--space-3);
   }
 }

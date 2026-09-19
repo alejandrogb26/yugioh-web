@@ -3,14 +3,18 @@
 }
 
 .not-found {
-  background: var(--surface);
+  background: linear-gradient(135deg, rgb(113 54 168 / 14%), transparent 38%), var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), var(--shadow-inset);
   max-width: 42rem;
   padding: clamp(1.5rem, 5vw, 3rem);
 }
 
 .not-found h1 {
+  color: var(--gold-bright);
   margin-top: 0;
+}
+
+.not-found .eyebrow {
+  color: var(--gold);
 }
