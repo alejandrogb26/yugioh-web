@@ -32,7 +32,7 @@ El servidor de Angular configura `proxy.conf.json` para redirigir `/api/**` a `h
 ## Verificación
 
 ```bash
-npm test -- --run
+npm test -- --watch=false
 npm run build
 ```
 
